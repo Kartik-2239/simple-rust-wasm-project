@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wasm-on-web</title>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <input id="input-box" type="file">
+    <div>
+      <h3>Opacity WASM</h3>
+      <input id="rust-range" value="0" type="range" min="1" max="100">
+    </div>
+    <div>
+      <h3>Grayscale</h3>
+      <button id="grayscale-button">Gray</button>
+    </div>
+    <div>
+      <h3>Brightness</h3>
+      <input type="range" value="0" min="1" max="100" id="brightness-button">
+    </div>
+    <div>
+      <h3>Contrast</h3>
+      <input type="range" value="0" min="1" max="100" id="contrast-button">
+    </div>
+    <!-- <div>
+      <h3>Brightness Js</h3>
+      <input id="js-range" value="0" type="range" min="1" max="100">
+    </div> -->
+    
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
