@@ -55,11 +55,22 @@ impl<'a> Img<'a>{
     }
 
     fn adjustContrast(&mut self, value: f32){
-        let contrast = value/100.0 + 1.0;
+        let contrast = value/100.0;
         self.for_each_pixel(|r,g,b|{
-            let r1 = ((r-128.0)*contrast + 128.0) as u8;
-            let g1 = ((g-128.0)*contrast + 128.0) as u8;
-            let b1 = ((b-128.0)*contrast + 128.0) as u8;
+            let r1 = ((r-128.0)*contrast + 128.0).clamp(0.0, 255.0) as u8;
+            let g1 = ((g-128.0)*contrast + 128.0).clamp(0.0, 255.0) as u8;
+            let b1 = ((b-128.0)*contrast + 128.0).clamp(0.0, 255.0) as u8;
+            (r1,g1,b1)
+        });
+    }
+
+    fn adjustSaturation(&mut self, value: f32){
+        let k = value/100.0;
+        self.for_each_pixel(|r,g,b|{
+            let L = 0.3*r+0.59*g+0.11*b;
+            let r1 = (r + (r-L)*k).clamp(0.0,255.0) as u8;
+            let g1 = (g + (g-L)*k).clamp(0.0,255.0) as u8;
+            let b1 = (b + (b-L)*k).clamp(0.0,255.0) as u8;
             (r1,g1,b1)
         });
     }
@@ -84,4 +95,16 @@ pub fn brightness(data: &mut [u8], value: f32){
 #[wasm_bindgen]
 pub fn contrast(data: &mut [u8], value: f32){
     Img::new(data).adjustContrast(value);
+}
+
+#[wasm_bindgen]
+pub fn saturation(data: &mut [u8], value: f32){
+    Img::new(data).adjustSaturation(value);
+}
+
+#[wasm_bindgen]
+pub fn pixels(data: &mut [u8], value: f32){
+    for i in (0..data.len()).step_by(4){
+
+    }
 }

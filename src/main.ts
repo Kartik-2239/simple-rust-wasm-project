@@ -1,4 +1,4 @@
-import { opacity,brightness, black_and_white, contrast} from "wasm-on-web"
+import { opacity,brightness, black_and_white, contrast, saturation } from "wasm-on-web"
 
 async function run() {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -6,7 +6,7 @@ async function run() {
       console.log("oops")
       return
     };
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d",{willReadFrequently:true});
     if (!ctx) return;
     const fileInput = document.getElementById('input-box') as HTMLInputElement
     fileInput.addEventListener("change", () => {
@@ -65,12 +65,22 @@ async function run() {
             const contrastBtn = document.getElementById('contrast-button') as HTMLButtonElement
             contrastBtn.addEventListener('input', ()=>{
               const frame = new ImageData(
-                // new Uint8ClampedArray(.data),
-                new Uint8ClampedArray(ctx.getImageData(0,0,canvas.width,canvas.height).data),
+                new Uint8ClampedArray(original.data),
+                // new Uint8ClampedArray(ctx.getImageData(0,0,canvas.width,canvas.height).data),
                 original.width,
                 original.height,
               );
               ctx!.putImageData(contrastHelper(frame,canvas,Number(contrastBtn.value)),0,0)
+            })
+            const saturationBtn = document.getElementById('saturation-button') as HTMLButtonElement
+            saturationBtn.addEventListener('input', ()=>{
+              const frame = new ImageData(
+                new Uint8ClampedArray(original.data),
+                // new Uint8ClampedArray(ctx.getImageData(0,0,canvas.width,canvas.height).data),
+                original.width,
+                original.height,
+              );
+              ctx!.putImageData(saturationHelper(frame,canvas,Number(saturationBtn.value)),0,0)
             })
             
             URL.revokeObjectURL(img.src);
@@ -107,5 +117,11 @@ function brightnessHelper(frame:any, canvas:any, value:number){
 function contrastHelper(frame:any, canvas:any, value: number) {
   var data = new Uint8Array(frame.data);
   contrast(data, value);
+  return new ImageData(new Uint8ClampedArray(data.buffer),canvas.width,canvas.height)
+}
+
+function saturationHelper(frame:any, canvas:any, value: number){
+  var data = new Uint8Array(frame.data)
+  saturation(data, value);
   return new ImageData(new Uint8ClampedArray(data.buffer),canvas.width,canvas.height)
 }
