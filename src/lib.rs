@@ -28,7 +28,7 @@ impl<'a> Img<'a>{
         }
     }
 
-    fn adjustOpacity(&mut self, intensity: f32){
+    fn adjust_opacity(&mut self, intensity: f32){
         self.for_each_pixel(|r,g,b| {
             let k = intensity/100.0;
             let r_new = ((255.0 - r) * k + r).clamp(0.0, 255.0) as u8;
@@ -38,14 +38,14 @@ impl<'a> Img<'a>{
         });
     }
 
-    fn switchGrayScale(&mut self){
+    fn switch_gray_scale(&mut self){
         self.for_each_pixel(|r,g,b|{
             let gray = (0.299*r + 0.587*g + 0.114*b) as u8;
             (gray,gray,gray)
         });
     }
 
-    fn adjustBrightness(&mut self, value: f32){
+    fn adjust_brightness(&mut self, value: f32){
         self.for_each_pixel(|r,g,b|{
             let r1 =  (r+value).clamp(0.0, 255.0) as u8;
             let g1 = (g+value).clamp(0.0, 255.0) as u8;
@@ -54,7 +54,7 @@ impl<'a> Img<'a>{
         });
     }
 
-    fn adjustContrast(&mut self, value: f32){
+    fn adjust_contrast(&mut self, value: f32){
         let contrast = value/100.0;
         self.for_each_pixel(|r,g,b|{
             let r1 = ((r-128.0)*contrast + 128.0).clamp(0.0, 255.0) as u8;
@@ -64,13 +64,13 @@ impl<'a> Img<'a>{
         });
     }
 
-    fn adjustSaturation(&mut self, value: f32){
+    fn adjust_saturation(&mut self, value: f32){
         let k = value/100.0;
         self.for_each_pixel(|r,g,b|{
-            let L = 0.3*r+0.59*g+0.11*b;
-            let r1 = (r + (r-L)*k).clamp(0.0,255.0) as u8;
-            let g1 = (g + (g-L)*k).clamp(0.0,255.0) as u8;
-            let b1 = (b + (b-L)*k).clamp(0.0,255.0) as u8;
+            let l = 0.3*r+0.59*g+0.11*b;
+            let r1 = (r + (r-l)*k).clamp(0.0,255.0) as u8;
+            let g1 = (g + (g-l)*k).clamp(0.0,255.0) as u8;
+            let b1 = (b + (b-l)*k).clamp(0.0,255.0) as u8;
             (r1,g1,b1)
         });
     }
@@ -79,32 +79,32 @@ impl<'a> Img<'a>{
 
 #[wasm_bindgen]
 pub fn opacity(data: &mut [u8], intensity: f32) {
-    Img::new(data).adjustOpacity(intensity);
+    Img::new(data).adjust_opacity(intensity);
 }
 
 #[wasm_bindgen]
 pub fn black_and_white(data: &mut [u8]){
-    Img::new(data).switchGrayScale();
+    Img::new(data).switch_gray_scale();
 }
 
 #[wasm_bindgen]
 pub fn brightness(data: &mut [u8], value: f32){
-    Img::new(data).adjustBrightness(value);
+    Img::new(data).adjust_brightness(value);
 }
 
 #[wasm_bindgen]
 pub fn contrast(data: &mut [u8], value: f32){
-    Img::new(data).adjustContrast(value);
+    Img::new(data).adjust_contrast(value);
 }
 
 #[wasm_bindgen]
 pub fn saturation(data: &mut [u8], value: f32){
-    Img::new(data).adjustSaturation(value);
+    Img::new(data).adjust_saturation(value);
 }
 
-#[wasm_bindgen]
-pub fn pixels(data: &mut [u8], value: f32){
-    for i in (0..data.len()).step_by(4){
+// #[wasm_bindgen]
+// pub fn pixels(data: &mut [u8], value: f32){
+//     for i in (0..data.len()).step_by(4){
 
-    }
-}
+//     }
+// }

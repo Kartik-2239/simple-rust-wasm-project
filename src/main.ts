@@ -25,6 +25,7 @@ async function run() {
             ctx?.drawImage(img, 0, 0);
             const rustRange = document.getElementById('rust-range') as HTMLInputElement;
             const original = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            // var originalV2 = ctx.getImageData(0, 0, canvas.width, canvas.height);
             rustRange.addEventListener('input', ()=>{
               const frame = new ImageData(
                 new Uint8ClampedArray(original.data),
@@ -53,10 +54,14 @@ async function run() {
               grayscaleBtn.textContent = "back"
             })
             const brightnessBtn = document.getElementById('brightness-button') as HTMLButtonElement
+            // brightnessBtn.addEventListener('change',()=>{
+            //   originalV2 = ctx.getImageData(0,0,canvas.width,canvas.height);
+            //   ctx.putImageData(originalV2.data);
+            // })
             brightnessBtn.addEventListener('input', ()=>{
               const frame = new ImageData(
-                // new Uint8ClampedArray(.data),
-                new Uint8ClampedArray(ctx.getImageData(0,0,canvas.width,canvas.height).data),
+                new Uint8ClampedArray(original.data),
+                // new Uint8ClampedArray(ctx.getImageData(0,0,canvas.width,canvas.height).data),
                 original.width,
                 original.height,
               );
