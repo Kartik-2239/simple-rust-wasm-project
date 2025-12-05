@@ -7,40 +7,76 @@
     <title>wasm-on-web</title>
     <style>
       #canvas{
-        width: 50vw;
+        width: 60vw;
+      }
+      .section {
+        margin: 8px;
+        width: 400px;
+        padding: 10px;
+        border: solid 1px black;
+        background-color: aliceblue;
+        display: flex;
+        justify-content: center;
+        /* align-items: center; */
+        flex-direction: column;
+        border-radius: 8px;
+      }
+      #grayscale-button{
+        width: 50px;
+      }
+      body{
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+      }
+      #input-box{
+        padding: 4px;
+      }
+      @media (max-width: 1150px) {
+        body {
+          flex-direction: column; /* switch to row */
+        }
+        .section{
+          width: 90vw;
+        }
+        #canvas{
+          width: 90vw;
+        }
       }
     </style>
   </head>
   <body>
     <div>
       <canvas id="canvas"></canvas>
-    </div>
-    <input id="input-box" type="file">
-    <div>
-      <h3>Opacity WASM</h3>
-      <input id="rust-range" value="0" type="range" min="1" max="100">
+      <input id="input-box" type="file">
     </div>
     <div>
-      <h3>Grayscale</h3>
-      <button id="grayscale-button">Gray</button>
-    </div>
-    <div>
-      <h3>Brightness</h3>
-      <input type="range" value="0" min="1" max="100" id="brightness-button">
-    </div>
-    <div>
-      <h3>Contrast</h3>
-      <input type="range" value="100" min="0" max="200" id="contrast-button">
-    </div>
-    <div>
-      <h3>Saturation</h3>
-      <input type="range" value="0" min="-100" max="200" id="saturation-button">
+      <div class="section">
+        <h3>Opacity WASM</h3>
+        <input id="rust-range" value="0" type="range" min="1" max="100">
+      </div>
+      <div class="section">
+        <h3>Grayscale</h3>
+        <button id="grayscale-button">Gray</button>
+      </div>
+      <div class="section">
+        <h3>Brightness</h3>
+        <input type="range" value="0" min="1" max="100" id="brightness-button">
+      </div>
+      <div class="section">
+        <h3>Contrast</h3>
+        <input type="range" value="100" min="0" max="200" id="contrast-button">
+      </div>
+      <div class="section">
+        <h3>Saturation</h3>
+        <input type="range" value="0" min="-100" max="200" id="saturation-button">
+      </div>
     </div>
     <!-- <div>
       <h3>Pixel</h3>
       <input type="range" value="0" min="0" max="100" id="saturation-button">
     </div> -->
-    <div id="app"></div>
+    <!-- <div id="app"></div> -->
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
